@@ -5,7 +5,7 @@
 #endif
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
 {-# OPTIONS_GHC -w #-}
-module Paths_Le_sacre_du_printemps_Tableu_II_Le_sacrifice (
+module Paths_5d_proof_verification_with_mulitverse_time_travel (
     version,
     getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir,
     getDataFileName, getSysconfDir
@@ -46,19 +46,19 @@ getBinDir, getLibDir, getDynLibDir, getDataDir, getLibexecDir, getSysconfDir :: 
 
 
 bindir, libdir, dynlibdir, datadir, libexecdir, sysconfdir :: FilePath
-bindir     = "/Users/joel/.cabal/bin"
-libdir     = "/Users/joel/.cabal/lib/aarch64-osx-ghc-9.2.7/Le-sacre-du-printemps-Tableu-II-Le-sacrifice-0.1.0.0-inplace-Le-sacre-du-printemps-Tableu-II-Le-sacrifice"
-dynlibdir  = "/Users/joel/.cabal/lib/aarch64-osx-ghc-9.2.7"
-datadir    = "/Users/joel/.cabal/share/aarch64-osx-ghc-9.2.7/Le-sacre-du-printemps-Tableu-II-Le-sacrifice-0.1.0.0"
-libexecdir = "/Users/joel/.cabal/libexec/aarch64-osx-ghc-9.2.7/Le-sacre-du-printemps-Tableu-II-Le-sacrifice-0.1.0.0"
-sysconfdir = "/Users/joel/.cabal/etc"
+bindir     = "/home/mitchell/.cabal/bin"
+libdir     = "/home/mitchell/.cabal/lib/x86_64-linux-ghc-9.4.6/5d-proof-verification-with-mulitverse-time-travel-0.1.0.0-inplace-5d-proof-verification-with-mulitverse-time-travel"
+dynlibdir  = "/home/mitchell/.cabal/lib/x86_64-linux-ghc-9.4.6"
+datadir    = "/home/mitchell/.cabal/share/x86_64-linux-ghc-9.4.6/5d-proof-verification-with-mulitverse-time-travel-0.1.0.0"
+libexecdir = "/home/mitchell/.cabal/libexec/x86_64-linux-ghc-9.4.6/5d-proof-verification-with-mulitverse-time-travel-0.1.0.0"
+sysconfdir = "/home/mitchell/.cabal/etc"
 
-getBinDir     = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_bindir")     (\_ -> return bindir)
-getLibDir     = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_libdir")     (\_ -> return libdir)
-getDynLibDir  = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_dynlibdir")  (\_ -> return dynlibdir)
-getDataDir    = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_datadir")    (\_ -> return datadir)
-getLibexecDir = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_libexecdir") (\_ -> return libexecdir)
-getSysconfDir = catchIO (getEnv "Le_sacre_du_printemps_Tableu_II_Le_sacrifice_sysconfdir") (\_ -> return sysconfdir)
+getBinDir     = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_bindir")     (\_ -> return bindir)
+getLibDir     = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_libdir")     (\_ -> return libdir)
+getDynLibDir  = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_dynlibdir")  (\_ -> return dynlibdir)
+getDataDir    = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_datadir")    (\_ -> return datadir)
+getLibexecDir = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_libexecdir") (\_ -> return libexecdir)
+getSysconfDir = catchIO (getEnv "5d_proof_verification_with_mulitverse_time_travel_sysconfdir") (\_ -> return sysconfdir)
 
 
 

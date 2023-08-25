@@ -1,7 +1,7 @@
 {-# LANGUAGE NoRebindableSyntax #-}
 {-# OPTIONS_GHC -fno-warn-missing-import-lists #-}
 {-# OPTIONS_GHC -w #-}
-module PackageInfo_Le_sacre_du_printemps_Tableu_II_Le_sacrifice (
+module PackageInfo_5d_proof_verification_with_mulitverse_time_travel (
     name,
     version,
     synopsis,
@@ -13,12 +13,12 @@ import Data.Version (Version(..))
 import Prelude
 
 name :: String
-name = "Le_sacre_du_printemps_Tableu_II_Le_sacrifice"
+name = "5d_proof_verification_with_mulitverse_time_travel"
 version :: Version
 version = Version [0,1,0,0] []
 
 synopsis :: String
-synopsis = "another banger"
+synopsis = ""
 copyright :: String
 copyright = ""
 homepage :: String
