@@ -20,6 +20,16 @@
   (major1) == 4 && (major2) <  16 || \
   (major1) == 4 && (major2) == 16 && (minor) <= 4)
 #endif /* MIN_VERSION_base */
+/* package natural-numbers-0.1.2.0 */
+#ifndef VERSION_natural_numbers
+#define VERSION_natural_numbers "0.1.2.0"
+#endif /* VERSION_natural_numbers */
+#ifndef MIN_VERSION_natural_numbers
+#define MIN_VERSION_natural_numbers(major1,major2,minor) (\
+  (major1) <  0 || \
+  (major1) == 0 && (major2) <  1 || \
+  (major1) == 0 && (major2) == 1 && (minor) <= 2)
+#endif /* MIN_VERSION_natural_numbers */
 
 /* tool gcc-11.1.0 */
 #ifndef TOOL_VERSION_gcc
