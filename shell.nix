@@ -2,7 +2,7 @@
 
 pkgs.mkShell {
   buildInputs = [
-    pkgs.haskellPackages.ghc
+    pkgs.ghc
     pkgs.haskellPackages.cabal-install
     pkgs.git
   ];
