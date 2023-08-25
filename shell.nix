@@ -1,9 +1,12 @@
 { pkgs ? import <nixpkgs> {} }:
 
+let
+  hask = pkgs.haskell.packages.ghc927;
+in
 pkgs.mkShell {
   buildInputs = [
-    pkgs.ghc
-    pkgs.haskellPackages.cabal-install
+    hask.ghc
+    hask.cabal-install
     pkgs.git
   ];
 }
