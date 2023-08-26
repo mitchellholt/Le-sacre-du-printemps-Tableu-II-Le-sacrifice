@@ -31,6 +31,22 @@ data Expr b a where
 
     Lift :: a -> Expr () a -- illegal cheese
 
+parens :: String -> String
+parens str = "(" ++ str ++ ")"
+
+instance Show (Expr b a) where
+    show (And p q) = parens (show p) ++ " & " ++ parens (show q)
+    show (Or p q) = parens (show p) ++ " || " ++ parens (show q)
+    show (Not p) = "~" ++ parens (show p)
+    show (Forall p) = "(A _)" ++ parens (show p)
+    show (Exists p) = "(E _)" ++ parens (show p)
+    show SoTrue = "T"
+    show (Variable n) = parens ("var " ++ show n)
+    show (Construct p) = "{ _ | " ++ show p ++ "}"
+    show (ElementOf p q) = parens (parens (show p) ++ " in " ++ parens (show q))
+    show (Equals p q) = parens (show p) ++ " = " ++ parens (show q)
+    show (Lift _) = "illegal cheese"
+
 
 newbind :: Expr b a -> Expr b a
 newbind (Variable n) = Variable (n+1)
@@ -44,6 +60,21 @@ newbind (Construct a) = Construct (newbind a)
 newbind (ElementOf a b) = ElementOf (newbind a) (newbind b)
 newbind (Equals a b) = Equals (newbind a) (newbind b)
 newbind (Lift a) = Lift a
+
+
+unbind :: Expr b a -> Expr b a
+unbind (Variable n) = Variable (n-1)
+unbind (And a b) = And (unbind a) (unbind b)
+unbind (Or a b) = Or (unbind a) (unbind b)
+unbind (Not a) = Not (unbind a)
+unbind (Forall a) = Forall (unbind a)
+unbind (Exists a) = Exists (unbind a)
+unbind SoTrue = SoTrue
+unbind (Construct a) = Construct (unbind a)
+unbind (ElementOf a b) = ElementOf (unbind a) (unbind b)
+unbind (Equals a b) = Equals (unbind a) (unbind b)
+unbind (Lift a) = Lift a
+
 
 newtype RRtoRR a = RRtoRR a
 type (-->) a b = RRtoRR (a,b)
@@ -61,10 +92,3 @@ use (Rule f) = f
 
 apply :: RR (a --> b) -> RR a -> RR b
 apply (Builder f) = f
-
--- meme = 
-
-
--- I'm thinking this is gonna land somewhere logic programmy
-
--- even = Construct x ( Exists n : x = 2*n )
