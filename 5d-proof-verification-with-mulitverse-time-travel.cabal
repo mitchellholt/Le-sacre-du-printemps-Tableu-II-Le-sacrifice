@@ -70,6 +70,7 @@ executable 5d-proof-verification-with-mulitverse-time-travel
         Math.Expression
         Math.Rules
         Math.Language
+        Math.Parsers
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -79,6 +80,7 @@ executable 5d-proof-verification-with-mulitverse-time-travel
         base ^>=4.16.4.0, 
         containers,
         natural-numbers,
+        megaparsec,
 
     -- Directories containing source files.
     hs-source-dirs:   app
