@@ -23,7 +23,7 @@ data Expr b a where
     Variable :: Natural -> Expr () a
 
     Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
-    ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, Set a) Bool
+    ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, a, Set a) Bool
 
     Equals :: Expr b a -> Expr c a -> Expr (b, c, a) Bool
 
@@ -88,7 +88,6 @@ data RR a where
 
 use :: RR (a -+> b) -> a -> b
 use (Rule f) = f
-
 
 apply :: RR (a --> b) -> RR a -> RR b
 apply (Builder f) = f
