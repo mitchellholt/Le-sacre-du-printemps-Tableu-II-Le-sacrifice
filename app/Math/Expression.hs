@@ -49,30 +49,18 @@ newtype RRtoRR a = RRtoRR a
 type (-->) a b = RRtoRR (a,b)
 newtype AtoA a = AtoA a
 type (-+>) a b = AtoA (a,b)
-type E a = AtoA (a,a)
+type R a = a -+> a
 
 data RR a where
     Rule :: (a -> b) -> RR (a -+> b)
     Builder :: (RR a -> RR b) -> RR (a --> b)
 
 
-use :: RR a -> Expr b a -> Expr b a
-use rule (And p q) = And (use rule p) (use rule q)
-use rule (Or p q) = Or (use rule p) (use rule q)
-use rule (Not p) = Not (use rule p)
-use rule (Forall p) = Forall (use rule p)
-use rule (Exists p) = Exists (use rule p)
--- SoTrue :: Expr () Bool
-use rule SoTrue = undefined -- TODO pls help
--- Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
-use rule (Construct expr) = undefined -- TODO pls help
--- ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, Set a) Bool
-use rule (ElementOf p q) = undefined -- TODO pls help
--- Equals :: Expr b a -> Expr c a -> Expr (b, c, a) Bool
-use rule (Equals a b) = undefined -- TODO pls help
+use :: RR (Expr a b -+> Expr c d) -> Expr a b -> Expr c d
+use (Rule f) = f
 
 
-sametobothsides :: RR ( E (Expr _ a) --> E (Expr (_, _, a) Bool) )
+sametobothsides :: RR (R (Expr _ a) --> R (Expr (_, _, a) Bool))
 sametobothsides = Builder
                     ( \(Rule (f :: Expr _ a -> Expr _ a)) ->
                         Rule ( \case
