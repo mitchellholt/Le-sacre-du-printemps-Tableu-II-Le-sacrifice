@@ -7,4 +7,4 @@ main :: IO ()
 main = do
     let expr = Exists (Variable 0)
     let expr' = use (apply excludedMiddle (Rule (const expr))) SoTrue
-    print expr'
+    print $ use (apply lhs (apply excludedMiddle (Rule $ const SoTrue))) (expr')

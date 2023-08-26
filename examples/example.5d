@@ -1,0 +1,6 @@
+-- leading captials in variable names are not allowed
+let x = E a . a
+
+proof (~ (E a . a) or (E a . a)) where
+    T
+    | excluded_middle x

@@ -39,7 +39,6 @@ lhs = Builder
         Or x y -> Or (f x) y
         And x y -> And (f x) y
         Equals x y -> Equals (f x) y
-        -- ElementOf x y -> ElementOf (f x) y
      )
     )
 
