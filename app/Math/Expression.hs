@@ -4,10 +4,12 @@ module Math.Expression where
 
 import Data.Natural
 
-data Set a = Set (a -> Bool)
+newtype Set a = Set (a -> Bool)
 
 -- type (-->) a b = (a,b)
 
+-- a is outsie type, e.g. Equal :: forall b. Expr b Bool
+-- b is the "inside" type, so 5 == 5 :: Expr Int Bool
 data Expr b a where
     And :: Expr b Bool -> Expr c Bool -> Expr (b,c,Bool) Bool
     Or :: Expr b Bool -> Expr c Bool -> Expr (b,c,Bool) Bool
@@ -18,7 +20,7 @@ data Expr b a where
 
     -- each of the binds increments these fellas,
     -- that way the nat is kinda like the scope
-    Variable :: Natural -> Expr () a 
+    Variable :: Natural -> Expr () a
 
     Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
     ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, Set a) Bool
@@ -37,7 +39,7 @@ newbind (Or a b) = Or (newbind a) (newbind b)
 newbind (Not a) = Not (newbind a)
 newbind (Forall a) = Forall (newbind a)
 newbind (Exists a) = Exists (newbind a)
-newbind (SoTrue) = SoTrue
+newbind SoTrue = SoTrue
 newbind (Construct a) = Construct (newbind a)
 newbind (ElementOf a b) = ElementOf (newbind a) (newbind b)
 newbind (Equals a b) = Equals (newbind a) (newbind b)
