@@ -20,7 +20,7 @@ data Expr b a where
 
     -- each of the binds increments these fellas,
     -- that way the nat is kinda like the scope
-    Variable :: Natural -> Expr () a 
+    Variable :: Natural -> Expr () a
 
     Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
     ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, Set a) Bool
@@ -39,7 +39,7 @@ newbind (Or a b) = Or (newbind a) (newbind b)
 newbind (Not a) = Not (newbind a)
 newbind (Forall a) = Forall (newbind a)
 newbind (Exists a) = Exists (newbind a)
-newbind (SoTrue) = SoTrue
+newbind SoTrue = SoTrue
 newbind (Construct a) = Construct (newbind a)
 newbind (ElementOf a b) = ElementOf (newbind a) (newbind b)
 newbind (Equals a b) = Equals (newbind a) (newbind b)
@@ -56,8 +56,24 @@ data RR a where
     Builder :: (RR a -> RR b) -> RR (a --> b)
 
 
+use :: RR a -> Expr b a -> Expr b a
+use rule (And p q) = And (use rule p) (use rule q)
+use rule (Or p q) = Or (use rule p) (use rule q)
+use rule (Not p) = Not (use rule p)
+use rule (Forall p) = Forall (use rule p)
+use rule (Exists p) = Exists (use rule p)
+-- SoTrue :: Expr () Bool
+use rule SoTrue = undefined -- TODO pls help
+-- Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
+use rule (Construct expr) = undefined -- TODO pls help
+-- ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, Set a) Bool
+use rule (ElementOf p q) = undefined -- TODO pls help
+-- Equals :: Expr b a -> Expr c a -> Expr (b, c, a) Bool
+use rule (Equals a b) = undefined -- TODO pls help
+
+
 sametobothsides :: RR ( E (Expr _ a) --> E (Expr (_, _, a) Bool) )
-sametobothsides = Builder 
+sametobothsides = Builder
                     ( \(Rule (f :: Expr _ a -> Expr _ a)) ->
                         Rule ( \case
                                 Equals a b -> Equals (f a) (f b)
@@ -68,11 +84,3 @@ sametobothsides = Builder
 
 introduceForall :: RR (Expr b Bool -+> Expr (b, Bool) Bool )
 introduceForall = Rule (Forall . newbind)
-
-
--- meme = 
-
-
--- I'm thinking this is gonna land somewhere logic programmy
-
--- even = Construct x ( Exists n : x = 2*n )
