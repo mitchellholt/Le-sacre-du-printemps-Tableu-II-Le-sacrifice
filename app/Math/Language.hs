@@ -32,7 +32,7 @@ toExpr (ValueExpr e_) =
 toExpr _ = Left "Expected a expression, got a rule"
 
 fromExpr :: forall b a. (Typeable b, Typeable a) => Expr b a -> Value
-fromExpr e = ValueExpr @b @a @Expr e
+fromExpr = ValueExpr @b @a @Expr
 
 
 toRule :: forall r. (Typeable r) => Value -> Either String (RR r)

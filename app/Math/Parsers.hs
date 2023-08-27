@@ -27,32 +27,29 @@ test :: (MonadParsec e s m, Tokens s ~ String) => m ()
 test = void $ chunk "png" <|> chunk "pdf"
 
 
+-- TODO maybe extend to include construct, elementOf, and equals
 expr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
 expr = choice
     [
-        --andExpr,
-        --orExpr,
-        --notExpr,
-        --forallExpr,
-        --existsExpr,
-        ValueExpr SoTrue <$ char 'T'
+        andExpr,
+        orExpr,
+        notExpr,
+        forallExpr,
+        existsExpr,
+        fromExpr SoTrue <$ char 'T',
+        variableExpr
     ]
-    -- And :: Expr b Bool -> Expr c Bool -> Expr (b,c,Bool) Bool
-    -- Or :: Expr b Bool -> Expr c Bool -> Expr (b,c,Bool) Bool
-    -- Not :: Expr b Bool -> Expr (b, Bool) Bool
-    -- Forall :: Expr b Bool -> Expr (b, Bool) Bool -- binds
-    -- Exists :: Expr b Bool -> Expr (b, Bool) Bool -- binds
-    -- SoTrue :: Expr () Bool
 
-    -- -- each of the binds increments these fellas,
-    -- -- that way the nat is kinda like the scope
-    -- Variable :: Natural -> Expr () a
 
-    -- Construct :: Expr b Bool -> Expr (b, Bool) (Set a) -- binds
-    -- ElementOf :: Expr b a -> Expr c (Set a) -> Expr (b, c, a, Set a) Bool
-
-    -- Equals :: Expr b a -> Expr c a -> Expr (b, c, a) Bool
-
-    -- -- not worrying about functions yet, but they might go here.
-
-    -- Lift :: a -> Expr () a -- illegal cheese
+andExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+andExpr = undefined
+orExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+orExpr = undefined
+notExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+notExpr = undefined
+forallExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+forallExpr = undefined
+existsExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+existsExpr = undefined
+variableExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+variableExpr = undefined
