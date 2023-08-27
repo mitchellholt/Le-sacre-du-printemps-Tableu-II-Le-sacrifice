@@ -2,6 +2,8 @@ module Main where
 
 import Math.Expression
 import Math.Rules
+import Math.Parsers
+import Text.Megaparsec -- for testing
 
 main :: IO ()
 main = do
