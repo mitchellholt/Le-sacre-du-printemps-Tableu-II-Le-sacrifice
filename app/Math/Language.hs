@@ -1,12 +1,53 @@
+{-# LANGUAGE GADTs #-}
+
 module Math.Language where
 
 import qualified Data.Map as Map
 
+import Data.Typeable
+
 import Math.Expression
 
-data Value
-    = ValueRule ( forall r. RR r )
-    | ValueExpr ( forall b a. Expr b a )
+class IsRule a where
+    toRule_ :: a r -> RR r
+
+class IsExpr e where
+    toExpr_ :: e b a -> Expr b a
+
+instance IsRule RR where
+    toRule_ = id
+
+instance IsExpr Expr where
+    toExpr_ = id
+
+data Value where
+    ValueRule :: forall a r. (Typeable a, IsRule r) => r a -> Value
+    ValueExpr :: forall b a e. (Typeable b, Typeable a, IsExpr e) => e b a -> Value
+
+toExpr :: forall b a. (Typeable b, Typeable a) => Value -> Either String (Expr b a)
+toExpr (ValueExpr e_) =
+        case (cast (toExpr_ e_) :: Maybe (Expr b a) ) of
+            (Just e) -> Right e
+            _ -> Left "Type missmatch"
+toExpr _ = Left "Expected a expression, got a rule"
+
+fromExpr :: forall b a. (Typeable b, Typeable a) => Expr b a -> Value
+fromExpr e = ValueExpr @b @a @Expr e
+
+
+toRule :: forall r. (Typeable r) => Value -> Either String (RR r)
+toRule (ValueRule r_) = 
+        case (cast (toRule_ r_) :: Maybe (RR r)) of
+            (Just r) -> Right r
+            _ -> Left "Type missmatch"
+toRule _ = Left "Expected a rule, got a expression"
+
+fromRule :: forall r. (Typeable r) => RR r -> Value
+fromRule r = ValueRule @r @RR r
+
+
+meme :: Value
+meme = fromExpr ( Exists (Variable 0) )
 
 data Term
     = Literal Value
