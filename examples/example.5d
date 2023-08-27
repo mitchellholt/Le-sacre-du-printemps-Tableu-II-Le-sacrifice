@@ -4,3 +4,4 @@ let x = E a . a
 proof (~ (E a . a) or (E a . a)) where
     T
     | excluded_middle x
+qed
