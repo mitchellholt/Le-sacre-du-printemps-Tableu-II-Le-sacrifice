@@ -1,55 +1,83 @@
 {-# LANGUAGE GADTs #-}
 module Math.Parsers where
 
-import Text.Megaparsec
 import Data.Void
-import qualified Data.Set as Set
 import Control.Monad (void)
 import Math.Language
 import Math.Expression
+import Text.Megaparsec
+import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char
 
 
 type Parser = Parsec Void String
 
 
-char :: MonadParsec e s m => Token s -> m (Token s)
-char t = token testToken expected
+symbol :: String -> Parser ()
+symbol p = optional space' *> tok p <* optional space'
     where
-        testToken x = if x == t then Just x else Nothing
-        expected = (Set.singleton . Tokens . pure) t
+        space' = L.space space1 lineComment blockComment
+
+        tok :: String -> Parser ()
+        tok = void . chunk
 
 
-newline :: (MonadParsec e s m, Token s ~ Char) => m ()
-newline = (void . single) '\n'
+lineComment :: Parser ()
+lineComment = start >> rest
+    where
+        start :: Parser ()
+        start = void (chunk "--")
+
+        rest :: Parser ()
+        rest = void (takeWhileP (Just "comment") (/= '\n'))
 
 
-test :: (MonadParsec e s m, Tokens s ~ String) => m ()
-test = void $ chunk "png" <|> chunk "pdf"
+blockComment :: Parser ()
+blockComment = start >> middle >> tryEnd
+    where
+        start :: Parser ()
+        start = void (chunk "{-")
+
+        middle :: Parser ()
+        middle = void (takeWhileP Nothing (/= '-'))
+
+        tryEnd :: Parser ()
+        tryEnd = (single '-' >> (void (try (single '}')) <|> (middle >> tryEnd)))
+            <?> "end of commment"
 
 
 -- TODO maybe extend to include construct, elementOf, and equals
-expr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
-expr = choice
-    [
-        andExpr,
-        orExpr,
-        notExpr,
-        forallExpr,
-        existsExpr,
-        fromExpr SoTrue <$ char 'T',
-        variableExpr
-    ]
+expr :: Parser (Expr a b) 
+expr = andExpr
 
 
-andExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+orExpr :: Parser (Expr a b)
+orExpr = flip (<|>) andExpr $ try $ do
+    e1 <- andExpr
+    symbol "||"
+    e2 <- orExpr
+    return (Or e1 e2)
+    
+
+andExpr :: Parser (Expr a b)
 andExpr = undefined
-orExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
-orExpr = undefined
+
+
 notExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
 notExpr = undefined
+
+
 forallExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
 forallExpr = undefined
+
+
 existsExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
 existsExpr = undefined
+
+
 variableExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
 variableExpr = undefined
+
+
+soTrueExpr :: (MonadParsec e s m, Token s ~ Char, Tokens s ~ String) => m Value
+soTrueExpr = fromExpr SoTrue <$ char 'T'
